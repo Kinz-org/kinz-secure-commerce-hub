@@ -1,15 +1,15 @@
 # These owners are requested for review on PRs that touch these areas.
-# Default: @nassim0014 reviews everything.
-* @nassim0014
+# Default: @kinzorg-afk reviews everything.
+* @kinzorg-afk
 
 # Backend security - require maintainer review on any security-sensitive change
-src/api/security/      @nassim0014
-src/api/utils/config.py @nassim0014
-SECURITY.md            @nassim0014
-docs/threat-model.md   @nassim0014
+src/api/security/      @kinzorg-afk
+src/api/utils/config.py @kinzorg-afk
+SECURITY.md            @kinzorg-afk
+docs/threat-model.md   @kinzorg-afk
 
 # CI/CD and infra - require maintainer review
-.github/workflows/     @nassim0014
-Dockerfile             @nassim0014
-docker-compose.yml     @nassim0014
-infrastructure/        @nassim0014
+.github/workflows/     @kinzorg-afk
+Dockerfile             @kinzorg-afk
+docker-compose.yml     @kinzorg-afk
+infrastructure/        @kinzorg-afk
