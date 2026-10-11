@@ -4,7 +4,7 @@ about: Report a security issue (NOT for public issues - see SECURITY.md)
 title: "[security] (do not describe the vulnerability in the title)"
 labels: ["security", "triage"]
 assignees:
-  - nassim0014
+  - kinzorg-afk
 ---
 
 :warning: **Please do NOT file public security reports this way.**

@@ -3,7 +3,7 @@
 ## Development setup
 
 ```bash
-git clone https://github.com/nassim0014/kinz-secure-commerce-hub.git
+git clone https://github.com/Kinz-org/kinz-secure-commerce-hub.git
 cd kinz-secure-commerce-hub
 
 # Backend

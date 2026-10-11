@@ -1,6 +1,6 @@
 # KINZ Secure Commerce Hub
 
-[![CI](https://github.com/nassim0014/kinz-secure-commerce-hub/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/nassim0014/kinz-secure-commerce-hub/actions/workflows/ci.yml)
+[![CI](https://github.com/Kinz-org/kinz-secure-commerce-hub/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Kinz-org/kinz-secure-commerce-hub/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/python-3.11%20%7C%203.12-blue.svg)](https://www.python.org/)
 [![Node](https://img.shields.io/badge/node-20%20%7C%2022-green.svg)](https://nodejs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -171,7 +171,7 @@ kinz-secure-commerce-hub/
 ### One-command spin-up
 
 ```bash
-git clone https://github.com/nassim0014/kinz-secure-commerce-hub.git
+git clone https://github.com/Kinz-org/kinz-secure-commerce-hub.git
 cd kinz-secure-commerce-hub
 cp .env.example .env
 
