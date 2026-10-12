@@ -130,6 +130,30 @@ def test_jwt_secret_none_algorithm_forbidden():
         Settings(JWT_ALGORITHM="none")
 
 
+@pytest.mark.parametrize("alg", ["RS256", "RS384", "RS512"])
+def test_jwt_asymmetric_algorithm_rejected_at_startup(alg):
+    """RS* used to pass validation, but tokens are signed with the shared
+    JWT_SECRET string, so signing then failed on every login. It must be
+    refused when settings load, not at the first request."""
+    from src.api.utils.config import Settings
+
+    with pytest.raises(Exception) as exc_info:
+        Settings(JWT_ALGORITHM=alg)
+    assert "JWT_ALGORITHM" in str(exc_info.value)
+
+
+@pytest.mark.parametrize("alg", ["HS256", "HS384", "HS512"])
+def test_jwt_symmetric_algorithms_round_trip(alg):
+    """Every algorithm the validator accepts must actually sign and verify
+    with JWT_SECRET - the invariant the RS* entries broke."""
+    from src.api.utils.config import Settings
+
+    s = Settings(JWT_ALGORITHM=alg)
+    claims = {"sub": "x@y.z", "role": "viewer"}
+    token = jwt.encode(claims, s.JWT_SECRET, algorithm=s.JWT_ALGORITHM)
+    assert jwt.decode(token, s.JWT_SECRET, algorithms=[s.JWT_ALGORITHM]) == claims
+
+
 # ────────────────────────────────────────────────────────────
 # 3. Production safety check
 # ────────────────────────────────────────────────────────────
