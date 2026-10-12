@@ -97,12 +97,21 @@ class Settings(BaseSettings):
     @field_validator("JWT_ALGORITHM")
     @classmethod
     def _validate_jwt_alg(cls, v: str) -> str:
-        # Allow HS256/HS384/HS512 (symmetric). Disallow "none" explicitly.
+        # Allow HS256/HS384/HS512 (symmetric) only. Disallow "none" explicitly.
+        #
+        # RS256/RS384/RS512 used to be accepted here, but jwt_handler signs and
+        # verifies with JWT_SECRET - a shared string, not a PEM key pair - so an
+        # RS* setting passed validation at startup and then made every login
+        # fail at runtime (500 on /auth/login). Reject it up front instead;
+        # asymmetric signing needs separate private/public key settings first.
         if v.lower() == "none":
             raise ValueError("JWT_ALGORITHM='none' is forbidden.")
-        allowed = {"HS256", "HS384", "HS512", "RS256", "RS384", "RS512"}
+        allowed = ("HS256", "HS384", "HS512")
         if v not in allowed:
-            raise ValueError(f"JWT_ALGORITHM must be one of {allowed}; got {v!r}.")
+            raise ValueError(
+                f"JWT_ALGORITHM must be one of {', '.join(allowed)} (signing uses the shared "
+                f"JWT_SECRET; asymmetric RS*/ES* keys are not supported); got {v!r}."
+            )
         return v
 
     def enforce_production_safety(self) -> None:
