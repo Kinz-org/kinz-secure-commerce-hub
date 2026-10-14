@@ -31,6 +31,11 @@ ruff==0.16.9
 pip-audit==2.10.1
 bandit==1.9.4
 
+# Transitive (requests <- pip-audit). Pinned so the image never ships 2.7.0
+# (CVE-2026-97688, DoS in chunked Deflate decoding, fixed in 2.8.0), which
+# made the Trivy gate fail.
+urllib3==2.8.0
+
 # Build-time toolchain, pinned only to satisfy `pip-audit --strict`.
 # setuptools is not imported by this application. It ships ambiently in the
 # Python 3.11 runner image (79.0.1, PYSEC-2026-3447) and pip-audit inspects the
