@@ -131,7 +131,7 @@ kinz-secure-commerce-hub/
 ├── data/
 │   ├── raw/products.csv             # Real KINZ product catalog (30 SKUs)
 │   └── processed/
-│       ├── sales_2023_2024.csv      # ~13.7k line items, ~4.5k orders
+│       ├── sales_2023_2024.csv      # ~12.9k line items, 4.5k orders
 │       └── customers.csv            # 500 customers, B2B + B2C
 ├── analytics/
 │   └── kinz_eda.ipynb               # EDA notebook → 3 business insights + charts
@@ -154,7 +154,7 @@ kinz-secure-commerce-hub/
 ├── docs/
 │   ├── threat-model.md              # STRIDE threat model
 │   ├── deployment.md                # Vercel + Render deployment guide
-│   └── images/                      # Screenshots (see Screenshots section)
+│   └── images/                      # Screenshots to add (README lists them)
 └── infrastructure/
     └── nginx.conf                   # Reverse proxy template for prod
 ```
@@ -200,15 +200,16 @@ docker compose up --build
 
 ## Screenshots / UI Preview
 
-> The screens below will be captured from a live `docker compose up` session and dropped into `docs/images/`. Placeholder paths are intentional so the README is recruiter-ready today.
+> No screenshots have been captured yet: `docs/images/` holds only a README listing
+> the files to add. Until then, run `docker compose up` and open the views below.
 
-| View                  | Preview                                                                                          | What it shows                                                       |
-|-----------------------|--------------------------------------------------------------------------------------------------|---------------------------------------------------------------------|
-| Dashboard overview    | ![Dashboard](./docs/images/dashboard-mockup.png)                                                 | Revenue, margin, AOV, active customers - KPIs at a glance          |
-| Channel breakdown     | ![Channels](./docs/images/channels-mockup.png)                                                    | B2C web vs. Instagram vs. B2B pharmacies - revenue & margin        |
-| Product performance   | ![Products](./docs/images/products-mockup.png)                                                    | Top SKUs by revenue and by margin (Vegetable Oils typically lead)  |
-| Login + 2FA screen    | ![Login](./docs/images/login-mockup.png)                                                          | JWT login flow with audit logging                                   |
-| API Swagger docs      | ![Swagger](./docs/images/swagger-mockup.png)                                                      | Auto-generated OpenAPI spec at `/docs`                              |
+| View                  | Where                                   | What it shows                                                       |
+|-----------------------|-----------------------------------------|---------------------------------------------------------------------|
+| Dashboard overview    | http://localhost:3000                   | Revenue, margin, AOV, active customers - KPIs at a glance          |
+| Channel breakdown     | http://localhost:3000                   | B2C web vs. Instagram vs. B2B pharmacies - revenue & margin        |
+| Product performance   | http://localhost:3000                   | Top SKUs by revenue and by margin                                   |
+| Login screen          | http://localhost:3000                   | JWT login flow with audit logging                                   |
+| API Swagger docs      | http://localhost:8000/docs              | Auto-generated OpenAPI spec (disabled when `NODE_ENV=production`)   |
 
 ---
 
