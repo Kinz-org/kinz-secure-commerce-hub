@@ -11,12 +11,14 @@ in the PR that fixes it.
   `/api/v1/auth/login` failed at signing time. Check: `Settings(JWT_ALGORITHM="RS256")` raises;
   `tests/backend/test_security_hardening.py::test_jwt_asymmetric_algorithm_rejected_at_startup`.
 
-- [ ] **`DEMO_USER_ROLE` is not validated.** `Settings.DEMO_USER_ROLE` is a free string,
-  but `rbac.current_user` rejects any token whose `role` is not `viewer`/`analyst`/`admin`.
-  A typo such as `DEMO_USER_ROLE=Admin` lets the demo user log in successfully and then
-  get 401 on every protected route, with nothing at startup pointing at the cause.
-  Fix: a `field_validator` restricting it to the three roles in `rbac.Role`. Check: a
-  test that `Settings(DEMO_USER_ROLE="Admin")` raises.
+- [x] **`DEMO_USER_ROLE` was not validated.** (done 2026-10-26)
+  `Settings.DEMO_USER_ROLE` was a free string, but `rbac.current_user` rejects any token
+  whose `role` is not `viewer`/`analyst`/`admin`, so a typo such as `DEMO_USER_ROLE=Admin`
+  let the demo user log in and then get 401 on every protected route. A `field_validator`
+  now restricts it to `config.VALID_ROLES` (defined in config, not imported from rbac, to
+  avoid a circular import). Check:
+  `tests/backend/test_security_hardening.py::test_demo_user_role_rejected_at_startup`, and
+  `test_demo_user_valid_roles_match_rbac` keeps `VALID_ROLES` equal to `rbac.Role`.
 
 - [ ] **KPI endpoints crash with 500 on one unparsable product cost.** `kpis.summary` and
   `kpis.channels` (`src/api/routes/kpis.py`) both do `float(row["cost_tnd"])` for every row

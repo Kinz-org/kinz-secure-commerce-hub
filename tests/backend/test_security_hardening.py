@@ -154,6 +154,30 @@ def test_jwt_symmetric_algorithms_round_trip(alg):
     assert jwt.decode(token, s.JWT_SECRET, algorithms=[s.JWT_ALGORITHM]) == claims
 
 
+@pytest.mark.parametrize("role", ["Admin", "ADMIN", "superuser", "", " admin"])
+def test_demo_user_role_rejected_at_startup(role):
+    """rbac.current_user 401s any token whose role is not viewer/analyst/admin,
+    so an invalid DEMO_USER_ROLE used to let the demo user log in and then fail
+    every protected route. It must be refused when settings load."""
+    from src.api.utils.config import Settings
+
+    with pytest.raises(Exception) as exc_info:
+        Settings(DEMO_USER_ROLE=role)
+    assert "DEMO_USER_ROLE" in str(exc_info.value)
+
+
+def test_demo_user_valid_roles_match_rbac():
+    """The config allowlist and rbac.Role must not drift apart."""
+    from typing import get_args
+
+    from src.api.security.rbac import Role
+    from src.api.utils.config import VALID_ROLES, Settings
+
+    assert set(VALID_ROLES) == set(get_args(Role))
+    for role in VALID_ROLES:
+        assert Settings(DEMO_USER_ROLE=role).DEMO_USER_ROLE == role
+
+
 # ────────────────────────────────────────────────────────────
 # 3. Production safety check
 # ────────────────────────────────────────────────────────────
