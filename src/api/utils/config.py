@@ -23,6 +23,11 @@ _INSECURE_SECRETS = frozenset(
     }
 )
 
+# Roles accepted by rbac.current_user. Kept here (not imported from rbac) because
+# rbac -> jwt_handler -> config would be a circular import; a test asserts the
+# two stay identical.
+VALID_ROLES: tuple[str, ...] = ("viewer", "analyst", "admin")
+
 
 class Settings(BaseSettings):
     """Strongly-typed settings loaded from environment (or .env)."""
@@ -111,6 +116,18 @@ class Settings(BaseSettings):
             raise ValueError(
                 f"JWT_ALGORITHM must be one of {', '.join(allowed)} (signing uses the shared "
                 f"JWT_SECRET; asymmetric RS*/ES* keys are not supported); got {v!r}."
+            )
+        return v
+
+    @field_validator("DEMO_USER_ROLE")
+    @classmethod
+    def _validate_demo_role(cls, v: str) -> str:
+        # rbac.current_user rejects any token whose role is not one of these, so
+        # a typo (e.g. "Admin") let the demo user log in and then get 401 on
+        # every protected route. Fail at startup instead.
+        if v not in VALID_ROLES:
+            raise ValueError(
+                f"DEMO_USER_ROLE must be one of {', '.join(VALID_ROLES)} (case-sensitive); got {v!r}."
             )
         return v
 
