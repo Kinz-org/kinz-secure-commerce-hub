@@ -17,7 +17,7 @@ cd src/frontend && npm install
 ## Running tests
 
 ```bash
-# Backend (67 tests, ~5s)
+# Backend (~5s; `make check` runs the tests plus ruff)
 pytest tests/ -v
 
 # Frontend
